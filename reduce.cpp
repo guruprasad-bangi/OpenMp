@@ -5,7 +5,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <string>
 #include <chrono>
 
 #ifdef __cplusplus
