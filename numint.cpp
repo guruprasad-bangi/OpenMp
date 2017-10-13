@@ -54,10 +54,7 @@ int main (int argc, char* argv[]) {
 
   std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
 
-  #pragma omp parallel num_threads(nbthreads)
-    {
-
-      if(scheduling == "static")
+  if(scheduling == "static")
         omp_set_schedule(omp_sched_static,granularity);
       else if(scheduling == "dynamic")
         omp_set_schedule(omp_sched_dynamic,granularity);
@@ -65,6 +62,8 @@ int main (int argc, char* argv[]) {
         omp_set_schedule(omp_sched_guided,granularity);
       else std::cerr << "Invalid scheduling options entered" << std::endl;
 
+  #pragma omp parallel num_threads(nbthreads)
+    {    
     #pragma omp for reduction(+:result) schedule(runtime)
       for(long j=0; j<n ; j++){
       double temp = a + ((j+0.5) * intermediateResult);
