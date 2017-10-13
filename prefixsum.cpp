@@ -40,7 +40,9 @@ int main (int argc, char* argv[]) {
   }
 
   int * arr = new int [atoi(argv[1])];
-  int * pr = new int [atoi(argv[1])];
+  int * pr = new int [atoi(argv[1])+1];
+
+  pr[0] = 0;
   generatePrefixSumData (arr, atoi(argv[1]));
   
   //write code here
@@ -66,7 +68,7 @@ int main (int argc, char* argv[]) {
         #pragma omp for schedule(static)
         for (int i=0; i<n; i++) {
             sum += arr[i];
-            pr[i] = sum;
+            pr[i+1] = sum;
         }
         suma[ithread+1] = sum;
         #pragma omp barrier
@@ -76,7 +78,7 @@ int main (int argc, char* argv[]) {
         }
         #pragma omp for schedule(static)
         for (int i=0; i<n; i++) {
-            pr[i] += offset;
+            pr[i+1] += offset;
         }
     }
     delete[] suma;
@@ -89,6 +91,7 @@ int main (int argc, char* argv[]) {
   
   checkPrefixSumResult(pr, atoi(argv[1]));
   
+  delete[] pr;
   delete[] arr;
 
   return 0;
