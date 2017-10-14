@@ -20,8 +20,8 @@ extern "C" {
 }
 #endif
 
-void merge(int *a, int l, int m, int r);
-int min2(int a1, int a2);
+void merge(int *a, long l, long m, long r);
+long min2(long a1, long a2);
 
 int main (int argc, char* argv[]) {
 
@@ -65,13 +65,13 @@ int main (int argc, char* argv[]) {
 
   std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
 
-  for (int len=1; len<=n-1; len = 2*len)
+  for (long len=1; len<=n-1; len = 2*len)
   {
     #pragma omp parallel for schedule(runtime)
-    for (int ls=0; ls<n-1; ls += 2*len)
+    for (long ls=0; ls<n-1; ls += 2*len)
     {
-      int mid = min2(ls+len-1, n-1);
-      int right = min2(ls+(2*len)-1, n-1);
+      long mid = min2(ls+len-1, n-1);
+      long right = min2(ls+(2*len)-1, n-1);
       merge(arr, ls, mid, right);
     }
   }
@@ -87,14 +87,14 @@ int main (int argc, char* argv[]) {
   return 0;
 }
 
-int min2(int a1, int a2)
+long min2(long a1, long a2)
 {
   return a1 < a2 ? a1 : a2;
 }
 
-void merge(int *a, int l, int m, int r)
+void merge(int *a, long l, long m, long r)
 {
-  int n1 = m - l + 1, n2 = r - m;
+  long n1 = m - l + 1, n2 = r - m;
 
   // Creating left and right arrays
   int L[n1], R[n2];
@@ -108,7 +108,7 @@ void merge(int *a, int l, int m, int r)
   }
 
   
-  int i = 0, j = 0, k = l;
+  long i = 0, j = 0, k = l;
 
   // Merging 2 arrays of length n1 & n2
   while (i < n1 && j < n2)
